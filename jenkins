@@ -37,9 +37,9 @@ pipeline {
 
         stage('push image'){
             steps {
-                withDockerRegistry([ credentialsId: "dockerhub", url: "" ])
+                withDockerRegistry([ credentialsId: "dockercred", url: "" ])
 			    {
-			       sh 'docker push jsachdev07/addressbook:$BUILD_NUMBER'
+			       sh 'docker push chandramohanupadhyay/springboot:$BUILD_NUMBER'
 			    }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
 		{
 			steps
 			{
-				sh 'docker run -itd -P jsachdev07/addressbook:$BUILD_NUMBER'
+				sh 'docker run -d -P chandramohanupadhyay/springboot:$BUILD_NUMBER'
 			}
 		}
 
