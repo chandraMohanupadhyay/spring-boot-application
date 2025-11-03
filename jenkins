@@ -28,5 +28,29 @@ pipeline {
             }
         }
 
+        stage ('build image'){
+            steps {
+                sh 'docker build -t springboot:$BUILD_NUMBER .'
+                sh 'docker tag springboot:$BUILD_NUMBER chandramohanupadhyay/springboot:$BUILD_NUMBER'
+            }
+        }
+
+        stage('push image'){
+            steps {
+                withDockerRegistry([ credentialsId: "dockerhub", url: "" ])
+			    {
+			       sh 'docker push jsachdev07/addressbook:$BUILD_NUMBER'
+			    }
+            }
+        }
+
+        stage('Deploy as container')
+		{
+			steps
+			{
+				sh 'docker run -itd -P jsachdev07/addressbook:$BUILD_NUMBER'
+			}
+		}
+
     }
 }
